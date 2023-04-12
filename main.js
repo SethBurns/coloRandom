@@ -1,26 +1,19 @@
-var hexData = [];
-var currentHexes;
+var lockButton = document.querySelector('.main-display');
 
-var newPaletteButtonSection = document.querySelector('.button-area');
-var newPaletteButton = document.querySelector('button');
-
-var mainColorBoxes = document.querySelectorAll('.color-container');
-
-window.addEventListener('load', function () {
-    console.log("getNewHexes()");
-});
-
-newPaletteButtonSection.addEventListener('click', function(event) {
-    if(event.target.classList.contains('button-box-l') || event.target.id === 'new-palette' || event.target.classList.contains('button-box-r')) {
-        getNewHexes();
+lockButton.addEventListener('click', function(event) {
+    if (event.target.className === 'lock-box') {
+        lockToggle(event);
     }
 });
 
-function getNewHexes() {
-    currentHexes = [];
-    mainColorBoxes.forEach((colorBox) => {
-        var newColor = getRandomHex().toUpperCase();
-        colorBox.firstElementChild.style.backgroundColor = `#${newColor}`;
-        colorBox.lastElementChild.innerText = `#${newColor}`;
-    });
+function getRandomHex() {
+    return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
+}
+
+function lockToggle(event) {
+    if (event.target.src === 'file:///Users/jason/turing/1mod/projects/coloRandom/assets/unlocked.png') {
+        event.target.src = 'file:///Users/jason/turing/1mod/projects/coloRandom/assets/locked.png'
+    } else {
+        event.target.src = 'file:///Users/jason/turing/1mod/projects/coloRandom/assets/unlocked.png'
+    }
 }
