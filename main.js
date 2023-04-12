@@ -2,7 +2,7 @@ var lockButton = document.querySelector('.main-display');
 
 lockButton.addEventListener('click', function(event) {
     if (event.target.className === 'lock-box') {
-        lockToggle(event);
+        lockToggle(event.target);
     }
 });
 
@@ -11,9 +11,9 @@ function getRandomHex() {
 }
 
 function lockToggle(event) {
-    if (event.target.src === 'file:///Users/jason/turing/1mod/projects/coloRandom/assets/unlocked.png') {
-        event.target.src = 'file:///Users/jason/turing/1mod/projects/coloRandom/assets/locked.png'
+    if (event.getAttribute('src') === './assets/unlocked.png') {
+        event.src = './assets/locked.png'
     } else {
-        event.target.src = 'file:///Users/jason/turing/1mod/projects/coloRandom/assets/unlocked.png'
+        event.src = './assets/unlocked.png'
     }
 }
