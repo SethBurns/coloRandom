@@ -1,5 +1,5 @@
 var hexData = [];
-var currentHexes;
+var currentHexes = [];
 
 var newPaletteButtonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
@@ -7,11 +7,15 @@ var newPaletteButton = document.querySelector('button');
 var mainColorBoxes = document.querySelectorAll('.color-container');
 var lockButton = document.querySelector('.main-display');
 
+// new code on this branch
+var savedPalettes = document.querySelector('.saved-containers')
+// end
+
 window.addEventListener('load', getNewHexes);
 
 lockButton.addEventListener('click', function(event) {
     if (event.target.className === 'lock-box') {
-        lockToggle(event.target);
+        toggleLock(event.target);
     }
 });
 
@@ -26,12 +30,13 @@ function getNewHexes() {
     var newColor;
     for(i = 0; i < mainColorBoxes.length; i++) {
         newColor = getRandomHex().toUpperCase();
+        currentHexes.push(newColor);
         mainColorBoxes[i].firstElementChild.style.backgroundColor = `#${newColor}`;
         mainColorBoxes[i].lastElementChild.innerText = `#${newColor}`;
     }
 }
 
-function lockToggle(event) {
+function toggleLock(event) {
     if (event.getAttribute('src') === './assets/unlocked.png') {
         event.src = './assets/locked.png'
     } else {
@@ -42,3 +47,30 @@ function lockToggle(event) {
 function getRandomHex() {
     return (Math.floor(Math.random() * 16777216).toString(16).padStart(6, 0));
 }
+
+
+// new code on this branch
+function savePalette() {
+    if (!hexData.includes(currentHexes)) {
+        hexData.push(currentHexes);
+    }
+    displayHexData();
+}
+
+function displayHexData() {
+    savedPalettes.innerHTML = '';
+    for (i = 0; i < hexData.length; i++) {
+        savedPalettes.innerHTML +=
+        `
+        <section class="mini-container">
+            <div class="mini-box"></div>
+            <div class="mini-box"></div>
+            <div class="mini-box"></div>
+            <div class="mini-box"></div>
+            <div class="mini-box"></div>
+        </section>
+        `
+    }
+}
+
+// end
