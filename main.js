@@ -5,7 +5,7 @@ var newPaletteButtonSection = document.querySelector('.button-area');
 var newPaletteButton = document.querySelector('button');
 
 var mainColorBoxes = document.querySelectorAll('.color-container');
-var lockButton = document.querySelector('.main-display');
+var lockButton = document.querySelector('.main-palettes');
 
 // new code on this branch
 var savedPalettes = document.querySelector('.saved-containers')
