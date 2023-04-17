@@ -20,6 +20,9 @@ lockButton.addEventListener('click', function(event) {
     if (event.target.classList.contains('lock-box')) {
         toggleLock(event.target);
     }
+    if (event.target.classList.contains('hue')) {
+        changeBrightness(event);
+    }
 });
 
 buttonSection.addEventListener('click', function(event) {
@@ -81,7 +84,7 @@ function getNewHexes(mainDisplayedColors) {
         if (thisColorBoxLock.classList.contains('unlocked')) {
             newColor = getRandomHex();
             mainDisplayedColors[i].firstElementChild.style.backgroundColor = `#${newColor}`;
-            mainDisplayedColors[i].lastElementChild.innerText = `#${newColor}`;
+            mainDisplayedColors[i].lastElementChild.innerHTML = `<div class="lighter hue">🔆</div> #${newColor} <div class="darker hue">🔅</div>`;
             currentPalette.push(newColor);
         } else { 
             currentPalette.push(oldHexes[i]);
@@ -196,9 +199,10 @@ function displayMainColours(savedPalette) {
 }
 
 function adjustHexColor(hexCode, isLighter) {
-    var red = parseInt(hexCode.slice(1, 3), 16);
-    var green = parseInt(hexCode.slice(3, 5), 16);
-    var blue = parseInt(hexCode.slice(5, 7), 16);
+    console.log(hexCode)
+    var red = parseInt(hexCode.slice(2, 4), 16);
+    var green = parseInt(hexCode.slice(4, 6), 16);
+    var blue = parseInt(hexCode.slice(6, 8), 16);
   
     var factor = isLighter ? 0.1 : -0.1;
     red = Math.round(red * (1 + factor));
@@ -211,4 +215,38 @@ function adjustHexColor(hexCode, isLighter) {
   
     var adjustedHexCode = "#" + rgbToHex([red, green, blue])
     return adjustedHexCode;
+  }
+
+  function changeBrightness(event) {
+      console.log(event)
+      var colorArray = event.target.parentNode.parentNode.parentNode.children;
+      for (var i = 0; i < colorArray.length; i++) {
+          var rbgColor = rgbToHex(rgbToNumbers(event.target.parentNode.parentNode.parentNode.children[i].children[0].style.backgroundColor));
+          if (rbgColor === event.target.parentNode.parentNode.children[1].innerText.slice(4, 10)) {
+            var position = i;
+            break;
+          }
+        console.log(rbgColor)
+      }
+      if (event.target.classList.contains('darker')){
+        var siblingHex = event.target.previousSibling.data;
+          
+        adjustColorBox(position, adjustHexColor(siblingHex, false), mainColorBoxes)
+          console.log('this is dark')
+        } else {
+        var siblingHex = event.target.nextSibling.data;
+        
+        adjustHexColor(siblingHex, true) 
+        console.log('this is light')
+    }
+  }
+
+  function adjustColorBox(indexPosition, newHex, mainDisplayedColors) {
+    mainDisplayedColors[indexPosition].
+    // if (thisColorBoxLock.classList.contains('unlocked')) {
+        // newHex = adjustHexColor
+        mainDisplayedColors[indexPosition].firstElementChild.style.backgroundColor = `#${newHex}`;
+        mainDisplayedColors[indexPosition].lastElementChild.innerHTML = `<div class="lighter hue">🔆</div> #${newHex} <div class="darker hue">🔅</div>`;
+        currentPalette.splice(indexPosition, 1, newHex);
+    // }
   }
